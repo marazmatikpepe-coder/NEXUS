@@ -1,252 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#00D9FF">
-    <title>NEXUS — AI Assistant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS - AI Assistant</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <!-- Dynamic Island -->
-    <div class="dynamic-island" id="island">
-        <div class="island-content">
-            <div class="ai-indicator">
+    <div class="container">
+        <div class="header">
+            <h1>🤖 NEXUS</h1>
+            <p class="subtitle">Твой AI ассистент с голосом и зрением</p>
+        </div>
+
+        <div class="status" id="status">
+            <span class="status-dot offline"></span>
+            <span id="statusText">Не подключен</span>
+        </div>
+
+        <div class="video-container">
+            <video id="userVideo" autoplay muted playsinline></video>
+            <canvas id="screenCanvas"></canvas>
+            <div class="ai-avatar" id="aiAvatar">
                 <div class="pulse"></div>
-                <span>NEXUS thinking...</span>
+                <span>N</span>
             </div>
         </div>
-    </div>
 
-    <!-- Status Bar -->
-    <div class="status-bar">
-        <span class="time" id="statusTime">12:34</span>
-        <div class="status-icons">
-            <span class="signal">📶</span>
-            <span class="battery" id="battery">100%</span>
-        </div>
-    </div>
-
-    <!-- Header -->
-    <header class="ios-header">
-        <button class="header-btn" onclick="toggleSettings()">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M12 1v6m0 6v6m-6-6h6m6 0h-6"/>
-            </svg>
-        </button>
-        <div class="header-title">
-            <h1>NEXUS</h1>
-            <p class="subtitle" id="modelName">Gemini Flash</p>
-        </div>
-        <button class="header-btn" onclick="clearChat()">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="3 6 5 6 21 6"/>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-            </svg>
-        </button>
-    </header>
-
-    <!-- Chat -->
-    <main class="chat-container" id="chat">
-        <!-- Welcome Card -->
-        <div class="welcome-card">
-            <div class="welcome-icon">⚡</div>
-            <h2>NEXUS</h2>
-            <p>Advanced AI Neural Network</p>
-            <div class="features">
-                <div class="feature-chip">📸 Vision</div>
-                <div class="feature-chip">📄 PDF Reader</div>
-                <div class="feature-chip">🎤 Voice Input</div>
-                <div class="feature-chip">💬 Smart Chat</div>
-            </div>
-        </div>
-    </main>
-
-    <!-- File Preview -->
-    <div class="file-preview" id="filePreview">
-        <div class="preview-content">
-            <img id="previewImage" alt="Preview">
-            <button class="preview-close" onclick="closePreview()">✕</button>
-            <div class="preview-info">
-                <span id="fileName">image.jpg</span>
-                <button class="preview-send" onclick="sendWithFile()">Send</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Input Panel -->
-    <footer class="input-container">
-        <button class="action-btn camera-btn" onclick="openCamera()" title="Take photo">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                <circle cx="12" cy="13" r="4"/>
-            </svg>
-        </button>
-
-        <button class="action-btn attach-btn" onclick="document.getElementById('fileInput').click()" title="Attach file">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
-            </svg>
-        </button>
-
-        <div class="input-wrapper">
-            <textarea 
-                id="messageInput" 
-                placeholder="Message to NEXUS..." 
-                rows="1"
-                maxlength="10000"
-            ></textarea>
-            <button class="voice-btn" id="voiceBtn" title="Voice input">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-                </svg>
-            </button>
+        <div class="controls">
+            <button id="startBtn" class="btn btn-primary">🎤 Начать сессию</button>
+            <button id="stopBtn" class="btn btn-danger" disabled>⏹️ Остановить</button>
+            <button id="shareScreenBtn" class="btn btn-secondary" disabled>🖥️ Поделиться экраном</button>
         </div>
 
-        <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="Send">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-            </svg>
-        </button>
-
-        <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt" style="display:none">
-        <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none">
-    </footer>
-
-    <!-- Settings Sheet -->
-    <div class="settings-sheet" id="settingsSheet">
-        <div class="sheet-handle"></div>
-        
-        <div class="settings-header">
-            <h2>⚙️ Settings</h2>
-            <button class="close-settings" onclick="toggleSettings()">Done</button>
+        <div class="transcript-container">
+            <h3>💬 Разговор</h3>
+            <div id="transcript" class="transcript"></div>
         </div>
 
-        <div class="settings-content">
-            <!-- Model Selection -->
-            <div class="setting-group">
-                <label class="setting-label">🧠 AI Model</label>
-                <div class="model-selector">
-                    <button class="model-card active" data-model="gemini" onclick="selectModel(this)">
-                        <div class="model-icon">✨</div>
-                        <div class="model-info">
-                            <strong>Gemini 1.5 Flash</strong>
-                            <span>Fast, with vision</span>
-                        </div>
-                        <div class="model-badge">Free</div>
-                    </button>
-                    <button class="model-card" data-model="claude" onclick="selectModel(this)">
-                        <div class="model-icon">🎯</div>
-                        <div class="model-info">
-                            <strong>Claude 3.5 Sonnet</strong>
-                            <span>Most intelligent</span>
-                        </div>
-                        <div class="model-badge">Free</div>
-                    </button>
-                    <button class="model-card" data-model="llama" onclick="selectModel(this)">
-                        <div class="model-icon">🦙</div>
-                        <div class="model-info">
-                            <strong>Llama 3.3 70B</strong>
-                            <span>Super fast</span>
-                        </div>
-                        <div class="model-badge">Free</div>
-                    </button>
+        <div class="settings">
+            <h3>⚙️ Настройки</h3>
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <label for="apiKey">OpenRouter API Key:</label>
+                    <input type="password" id="apiKey" placeholder="sk-or-v1-...">
+                    <small>Получи на <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a></small>
                 </div>
-            </div>
-
-            <!-- Interface Settings -->
-            <div class="setting-group">
-                <label class="setting-label">🎨 Interface</label>
-                
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <span class="setting-title">Dark Mode</span>
-                        <span class="setting-desc">Auto by time</span>
-                    </div>
-                    <label class="ios-switch">
-                        <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
-                        <span class="slider"></span>
-                    </label>
+                <div class="setting-item">
+                    <label for="elevenLabsKey">ElevenLabs API Key:</label>
+                    <input type="password" id="elevenLabsKey" placeholder="...">
+                    <small>Получи на <a href="https://elevenlabs.io" target="_blank">elevenlabs.io</a></small>
                 </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <span class="setting-title">Sounds</span>
-                        <span class="setting-desc">Audio notifications</span>
-                    </div>
-                    <label class="ios-switch">
-                        <input type="checkbox" id="soundToggle" checked>
-                        <span class="slider"></span>
-                    </label>
+                <div class="setting-item">
+                    <label for="aiName">Имя AI:</label>
+                    <input type="text" id="aiName" value="NEXUS" placeholder="NEXUS">
                 </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <span class="setting-title">Haptics</span>
-                        <span class="setting-desc">Vibration feedback</span>
-                    </div>
-                    <label class="ios-switch">
-                        <input type="checkbox" id="hapticToggle" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- AI Settings -->
-            <div class="setting-group">
-                <label class="setting-label">🤖 AI Behavior</label>
-                
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <span class="setting-title">Voice Responses</span>
-                        <span class="setting-desc">NEXUS speaks answers</span>
-                    </div>
-                    <label class="ios-switch">
-                        <input type="checkbox" id="voiceResponseToggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <span class="setting-title">Emoji in Answers</span>
-                        <span class="setting-desc">Add 😊 to text</span>
-                    </div>
-                    <label class="ios-switch">
-                        <input type="checkbox" id="emojiToggle" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Info -->
-            <div class="setting-group">
-                <div class="info-card">
-                    <p>🔐 All requests encrypted</p>
-                    <p>💾 History stored locally</p>
-                    <p>⚡ Works without VPN</p>
+                <div class="setting-item">
+                    <label for="voiceId">Голос (ElevenLabs Voice ID):</label>
+                    <input type="text" id="voiceId" value="21m00Tcm4TlvDq8ikWAM" placeholder="21m00Tcm4TlvDq8ikWAM">
+                    <small>Rachel (женский) по умолчанию</small>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Voice Recording -->
-    <div class="voice-recording" id="voiceRecording">
-        <div class="recording-animation">
-            <div class="wave"></div>
-            <div class="wave"></div>
-            <div class="wave"></div>
-        </div>
-        <p>🎤 Listening...</p>
-        <button class="stop-recording" onclick="stopRecording()">Stop</button>
-    </div>
-
-    <script src="config.js"></script>
-    <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
