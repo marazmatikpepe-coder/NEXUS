@@ -41,16 +41,22 @@
         <div class="settings">
             <h3>⚙️ Настройки</h3>
             <div class="settings-grid">
-                <div class="setting-item">
-                    <label for="apiKey">OpenRouter API Key:</label>
-                    <input type="password" id="apiKey" placeholder="sk-or-v1-...">
-                    <small>Получи на <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a></small>
-                </div>
-                <div class="setting-item">
-                    <label for="elevenLabsKey">ElevenLabs API Key:</label>
-                    <input type="password" id="elevenLabsKey" placeholder="...">
-                    <small>Получи на <a href="https://elevenlabs.io" target="_blank">elevenlabs.io</a></small>
-                </div>
+               <div class="setting-item">
+    <label for="voiceType">Тип голоса:</label>
+    <select id="voiceType" class="voice-select">
+        <option value="browser">🌐 Браузерный (бесплатно)</option>
+        <option value="google">🔊 Google Cloud TTS (бесплатно)</option>
+    </select>
+    <small>Браузерный работает везде, Google - качественнее</small>
+</div>
+<div class="setting-item">
+    <label for="voiceLang">Язык голоса:</label>
+    <select id="voiceLang" class="voice-select">
+        <option value="ru-RU">🇷🇺 Русский</option>
+        <option value="en-US">🇺🇸 Английский (US)</option>
+        <option value="en-GB">🇬🇧 Английский (UK)</option>
+    </select>
+</div>
                 <div class="setting-item">
                     <label for="aiName">Имя AI:</label>
                     <input type="text" id="aiName" value="NEXUS" placeholder="NEXUS">
